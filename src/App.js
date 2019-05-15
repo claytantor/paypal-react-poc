@@ -1,40 +1,31 @@
 import './App.css';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
 import moment from 'moment'; //imports fine
 
-//fails to import
-import paypal from '@paypal/checkout-components' 
+import PaypalButton from './components/PaypalButton';
 
+const CLIENT = {
+  sandbox: process.env.REACT_APP_PAYPAL_CLIENT_ID_SANDBOX,
+  production: process.env.REACT_APP_PAYPAL_CLIENT_ID_PRODUCTION,
+};
 
-let PayPalButton = paypal.Buttons.driver('react', { React, ReactDOM });
+console.log("client", CLIENT);
 
-
-class PayPalButtonComponent extends React.Component {
-  createOrder(data, actions) {
-      return actions.order.create({
-          purchase_units: [{
-              amount: {
-                  value: '0.01'
-              }
-          }]
-      });
-  }
-  onApprove(data, actions) {
-      return actions.order.capture();
-  }
-  render() {
-      return (
-          <PayPalButton
-              createOrder={ (data, actions) => this.createOrder(data, actions) }
-              onApprove={ (data, actions) => this.onApprove(data, actions) }
-          />
-      );
-  }
-}
+const ENV = process.env.NODE_ENV === 'production'
+  ? 'production'
+  : 'sandbox';
 
 function App() {
+  const onSuccess = (payment) =>
+    console.log('Successful payment!', payment);
+
+  const onError = (error) =>
+    console.log('Erroneous payment OR failed to load script!', error);
+
+  const onCancel = (data) =>
+    console.log('Cancelled payment!', data);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -42,6 +33,17 @@ function App() {
         <div>This is where we do it.</div>
         <div>
           hello world {moment.utc().format("YYYY-MM-DD HH:MM:SS")}
+        </div>
+        <div className="paypal-button-holder"><PaypalButton
+            client={CLIENT}
+            env={ENV}
+            commit={true}
+            currency={'USD'}
+            total={19}
+            onSuccess={onSuccess}
+            onError={onError}
+            onCancel={onCancel}
+          />
         </div>
       </header>
     </div>
