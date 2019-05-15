@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@paypal/checkout-components": "^5.0.30",
+    "moment": "^2.24.0",
     "react": "^16.8.6",
+    "react-async-script-loader": "^0.3.0",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.0.3",
     "react-scripts": "3.0.1"
   },
   "scripts": {
