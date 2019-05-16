@@ -10,6 +10,17 @@ const CLIENT = {
   production: process.env.REACT_APP_PAYPAL_CLIENT_ID_PRODUCTION,
 };
 
+const buttonItem = 
+  {
+    name: "Flashlex Sapphire 30",
+    description: "30 day subscription to the flashlex service.",
+    quantity: 1,
+    price: 19,
+    tax: 0.00,
+    sku: "SUBSAP101",
+    currency: "USD"
+  };
+
 console.log("client", CLIENT);
 
 const ENV = process.env.NODE_ENV === 'production'
@@ -34,10 +45,14 @@ function App() {
         <div>
           hello world {moment.utc().format("YYYY-MM-DD HH:MM:SS")}
         </div>
-        <div className="paypal-button-holder"><PaypalButton
+        <div className="paypal-button-holder">
+        <PaypalButton
+            userId="ecd13b11-6d91-4e8e-9156-60e451a3c975"
+            product="sapphire_30"
             client={CLIENT}
             env={ENV}
             commit={true}
+            item={buttonItem}
             currency={'USD'}
             total={19}
             onSuccess={onSuccess}
